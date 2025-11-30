@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 Клиенты
+  ul
+    each client in clients
+      li
+        | #{client.label}
+        if user.id_role == 1 || user.id_role == 2
+          form(action='/clients/edit/' + client.id, method='post', style="display:inline")
+            input(type='text', name='label', placeholder='Новый название')
+            button(type='submit') Редактировать
+          form(action='/clients/delete/' + client.id, method='post', style="display:inline")
+            button(type='submit') Удалить
+  if user.id_role == 1 || user.id_role == 2
+    form(action='/clients/create', method='post')
+      input(type='text', name='label', placeholder='Новый клиент')
+      button(type='submit') Добавить

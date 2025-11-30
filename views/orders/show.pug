@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h2= `Заказ ${order.label}`
+  div
+    strong Название: 
+    | #{order.label}
+  div
+    strong Клиент: 
+    | #{order.client_label}
+  div
+    strong Статус: 
+    | #{order.status_label}
+  div
+    strong Сумма: 
+    | #{order.amount}
+  br
+  a(href='/orders') Назад к списку заказов

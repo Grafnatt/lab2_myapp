@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h2 Список заказов
+
+  if can_create_order
+    a#create_order_button.btn(href="#") Создать заказ
+
+  if orders.length
+    table
+      thead
+        tr
+          th ID
+          th Название
+          th Клиент
+          th Сумма
+          th Действия
+      tbody
+        each order in orders
+          tr
+            td= order.id
+            td= order.label
+            td= order.client_label
+            td= order.amount
+            td
+              a(href=`/orders/${order.id}`) Просмотр
+  else
+    p Нет заказов
