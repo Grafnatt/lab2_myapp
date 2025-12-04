@@ -5,18 +5,15 @@ block content
     div
         ul
             if user
-              if  can_view_clients
+              if can_view_clients
                 li
                   a(href='/clients') Клиенты
-              if  can_view_users
+              if can_view_users
                 li
                   a(href='/users') Пользователи
               if can_view_orders
                 li
                   a(href='/orders') Заказы
-              if can_view_order_items
-                li
-                  a(href='/order_items') Элементы заказа
               if can_view_payments
                 li
                   a(href='/payments') Оплаты

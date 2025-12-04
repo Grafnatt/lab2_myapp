@@ -1,0 +1,50 @@
+extends ../layout
+
+block content
+    button.back-button(type="button" onclick="window.location.href='/'") Назад
+    
+    h1= title
+    
+    h3 Информация о заказе
+    div
+        strong Заказ: 
+        | #{order.label} (ID: #{order.id})
+    
+    hr
+    
+    h3 Список оплат
+    if payments.length > 0
+        table
+            thead
+                tr
+                    th ID
+                    th Тип оплаты
+                    th Сумма
+                    th Дата
+            tbody
+                each payment in payments
+                    tr
+                        td= payment.id
+                        td= payment.payment_type_label
+                        td= payment.amount
+                        td= payment.created_at || '-'
+    else
+        p Нет оплат по этому заказу
+    
+    hr
+    
+    h3 Добавить оплату
+    form(action=`/payments/${order.id}/add` method="POST")
+        div
+            label Тип оплаты:
+            select(name="id_payment_type")
+                each type in paymentTypes
+                    option(value=type.id)= type.label
+        div
+            label Сумма:
+            input(type="number" step="0.01" name="amount" required)
+        div
+            button(type="submit") Добавить оплату
+
+    div(style="margin: 20px 0;")
+    a(href=`/orders/${order.id}` style="color: #00B7FF") Назад заказу

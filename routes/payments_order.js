@@ -2,39 +2,10 @@ var express = require('express');
 var router = express.Router();
 var session = require('../session');
 
-// Главная страница всех платежей
-router.get('/', async function(req, res, next) {
-    const user = session.auth(req).user;
-    if (!user || user.id_role > 2) {
-        return res.status(403).send('Доступ запрещен');
-    }
-
-    try {
-        let payments = await req.db.any(`
-            SELECT
-                payments.id AS id,
-                orders.label AS order_label,
-                payment_types.label AS payment_type_label,
-                payments.amount AS amount
-            FROM payments
-            INNER JOIN payment_types ON payment_types.id = payments.id_payment_type
-            INNER JOIN orders ON orders.id = payments.id_order
-        `);
-        res.render('payments/list', { 
-            title: 'Платежи', 
-            payments: payments,
-            user: user 
-        });
-    } catch (error) {
-        console.error('Ошибка загрузки платежей:', error);
-        res.status(500).send('Ошибка сервера');
-    }
-});
-
-// Платежи конкретного заказа
+// Оплаты конкретного заказа
 router.get('/:orderId', async function(req, res) {
     const user = session.auth(req).user;
-    if (!user || user.id_role > 2) {
+    if (!user || user.id_role > 2) {  // только admin и manager
         return res.status(403).send('Доступ запрещен');
     }
 
@@ -76,7 +47,7 @@ router.get('/:orderId', async function(req, res) {
     }
 });
 
-// Добавить оплату к заказу
+// Добавить оплату
 router.post('/:orderId/add', async function(req, res) {
     const user = session.auth(req).user;
     if (!user || user.id_role > 2) {

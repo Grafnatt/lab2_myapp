@@ -18,8 +18,9 @@ router.get('/', async function(req, res, next) {
 //создание клиента
 router.post('/create', async function(req, res, next) {
     var user = session.auth(req).user;
-    if (!user || user.id_role == 3) return res.status(403).send('Нет доступа');
-
+    if (!user || user.id_role > 2) {  // role > 2 = сотрудник (3)
+    return res.status(403).send('Нет доступа');
+    }
     await req.db.none('INSERT INTO clients(label) VALUES($1)', [req.body.label]);
     res.redirect('/clients');
 });
@@ -27,8 +28,9 @@ router.post('/create', async function(req, res, next) {
 //редактирование клиента
 router.post('/edit/:id', async function(req, res, next) {
     var user = session.auth(req).user;
-    if (!user || user.id_role == 3) return res.status(403).send('Нет доступа');
-
+    if (!user || user.id_role > 2) {  // role > 2 = сотрудник (3)
+    return res.status(403).send('Нет доступа');
+    }
     await req.db.none('UPDATE clients SET label=$1 WHERE id=$2', [req.body.label, req.params.id]);
     res.redirect('/clients');
 });
@@ -36,8 +38,9 @@ router.post('/edit/:id', async function(req, res, next) {
 //удаление клиента
 router.post('/delete/:id', async function(req, res, next) {
     var user = session.auth(req).user;
-    if (!user || user.id_role == 3) return res.status(403).send('Нет доступа');
-
+    if (!user || user.id_role > 2) {  // role > 2 = сотрудник (3)
+    return res.status(403).send('Нет доступа');
+    }
     await req.db.none('DELETE FROM clients WHERE id=$1', [req.params.id]);
     res.redirect('/clients');
 });

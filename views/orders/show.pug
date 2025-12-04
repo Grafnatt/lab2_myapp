@@ -1,18 +1,40 @@
 extends ../layout
 
 block content
-  h2= `Заказ ${order.label}`
-  div
-    strong Название: 
-    | #{order.label}
-  div
-    strong Клиент: 
-    | #{order.client_label}
-  div
-    strong Статус: 
-    | #{order.status_label}
-  div
-    strong Сумма: 
-    | #{order.amount}
-  br
-  a(href='/orders') Назад к списку заказов
+    button.back-button(type="button" onclick="window.location.href='/'") Назад
+    
+    h2= `Заказ ${order.label}`
+    
+    div
+        strong Название: 
+        | #{order.label}
+    div
+        strong Клиент: 
+        | #{order.client_label}
+    div
+        strong Текущий статус: 
+        | #{order.status_label}
+    div
+        strong Сумма: 
+        | #{order.amount}
+    
+    if user && (user.id_role == 1 || user.id_role == 2)
+        hr
+        h3 Изменить статус заказа
+        div(style="margin: 20px 0;")
+            form(action=`/orders/${order.id}/status` method="POST")
+                label(style="display: block; margin-bottom: 10px") Выберите новый статус:
+                select(name="id_status" style="padding: 5px; margin-right: 10px")
+                    option(value="10" selected=order.id_status==10) Проект
+                    option(value="20" selected=order.id_status==20) В работе
+                    option(value="30" selected=order.id_status==30) Завершён
+                button.btn(type="submit;") Изменить статус
+    
+    if user && (user.id_role == 1 || user.id_role == 2)
+        hr
+        div(style="margin: 20px 0;")
+        a.btn(href=`/payments/${order.id}`) Управление оплатами
+    
+    br
+    div(style="margin: 20px 0;")
+    a(href='/orders' style="color: #00B7FF") Назад к списку заказов

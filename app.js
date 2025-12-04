@@ -11,14 +11,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var clientsRouter = require('./routes/clients');
 var ordersRouter = require('./routes/orders');
-var orderItemsRouter = require('./routes/order_items');
 var paymentsRouter = require('./routes/payments');
-var usersRouter = require('./routes/users');
 
 var app = express();
 session = require("./session.js")
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,15 +35,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/clients', clientsRouter);
 app.use('/orders', ordersRouter);
-app.use('/order_items', orderItemsRouter);
 app.use('/payments', paymentsRouter);
-app.use('/users', usersRouter);
 
 var api = require('./routes/api');
 app.use('/api', api);
-var api_auth = require('./routes/api/auth');
-api.use('/auth', api_auth);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

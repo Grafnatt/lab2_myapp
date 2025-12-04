@@ -8,8 +8,8 @@ exports.login = async function(req, login, pass) {
     var user = await req.db.oneOrNone('SELECT * FROM users WHERE login = $1', login);
 
     if (user && user.pass === md5(pass)) {
-        var cookieSecret = 'secret';
-        var hash = crypto.createHmac('sha256', cookieSecret)
+        var secretKey = 'secret';
+        var hash = crypto.createHmac('sha256', secretKey)
                          .update(login)
                          .digest('hex');
 
@@ -26,10 +26,11 @@ exports.login = async function(req, login, pass) {
 
 exports.auth = function(req) {
     var cookies = req.cookies || {};
-    var secret = cookies['app_user'];
-    if (!secret) return {};
+    var cookieValue = cookies['app_user'];
+    
+    if (!cookieValue) return {};
 
-    var res = secret.split('--');
+    var res = cookieValue.split('--');
     if (!res.length) return {};
 
     var session = exports.sessions[res[0]];
@@ -42,6 +43,18 @@ exports.auth = function(req) {
     return session;
 };
 
+// ВАЖНО: функция проверки прав (для задания 7)
+exports.can = function(user) {
+    let res = {};
+
+    res.view_users = user && user.id_role == 1 ? true : false;      // только админ
+    res.view_payments = user && user.id_role <= 2 ? true : false;   // админ + руководитель
+    res.view_orders = user && user.id_role <= 3 ? true : false;     // все
+    res.view_clients = user && user.id_role <= 2 ? true : false;    // админ + руководитель
+
+    return res;
+};
+
 exports.logout = function(login) {
-    exports.sessions[login] = {};
+    delete exports.sessions[login]; 
 };

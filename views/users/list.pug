@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+    button.back-button(type="button" onclick="window.location.href='/'") Назад
+    script(src='/javascripts/users.js')
+    h1= title
+    
+    table#tbl_users
+        thead
+            tr 
+                th id
+                th ФИО
+                th Логин
+                th Роль
+                th Действия
+        tbody
+            // Данные будут загружены через AJAX
+
+    hr
+    h2 Добавить пользователя
+    form(action="/users/create" method="POST" style="margin: 20px 0; padding: 20px; border: 1px solid #ccc;")
+        div(style="margin-bottom: 10px")
+            label(style="display: inline-block; width: 100px") Логин:
+            input(type="text" name="login" value=user.login)
+        div(style="margin-bottom: 10px")
+            label(style="display: inline-block; width: 100px") Пароль:
+            input(type="password" name="pass" placeholder="Пароль" required)
+        div(style="margin-bottom: 10px")
+            label(style="display: inline-block; width: 100px") ФИО:
+            input(type="text" name="fio" placeholder="ФИО" required)
+        div(style="margin-bottom: 10px")
+            label(style="display: inline-block; width: 100px") Роль:
+            select(name="id_role")
+                option(value="1") Администратор
+                option(value="2") Руководитель
+                option(value="3") Сотрудник
+        button(type="submit" style="padding: 5px 15px") Создать

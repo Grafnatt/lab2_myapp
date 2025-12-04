@@ -1,7 +1,11 @@
 extends ../layout
 
 block content
+    
+  button.back-button(type="button" onclick="window.location.href='/'") Назад
+    
   h2 Список заказов
+  
   if can_create_order
     a(href='#', id='create_order_button') Создать новый заказ
 

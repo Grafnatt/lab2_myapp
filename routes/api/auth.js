@@ -13,9 +13,9 @@ router.post('/login', async function(req, res) {
 });
 router.post('/logout', function(req, res) {
     var user = session.auth(req)
-    if (user) {
+    if (user && user.user) {  // проверяем, что user существует
         res.clearCookie('app_user', { path: '/' });
-        session.logout(user)
+        session.logout(user.user.login)  // передаем логин
     }
     res.json({ msg: '' })
 });

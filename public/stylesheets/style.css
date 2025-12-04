@@ -7,7 +7,6 @@ a {
   color: #00B7FF;
 }
 
-
 .q-window {display:none}
 .q-window.active {display: block;}
 .q-window__modal {background:#000;opacity:0.7;z-index:9998;position:fixed;left:0;right:0;top:0;height:100%}
@@ -32,4 +31,8 @@ table th {
 table td {
   border: 1px solid #dddddd;
   padding: 5px;
+}
+.btn {
+    color: #00B7FF;
+    font-size: 14px;
 }

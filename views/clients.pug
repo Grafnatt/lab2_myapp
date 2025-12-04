@@ -1,18 +1,31 @@
 extends layout
 
 block content
+  button.back-button(type="button" onclick="window.location.href='/'") Назад
   h1 Клиенты
-  ul
-    each client in clients
-      li
-        | #{client.label}
+  
+  table
+    thead
+      tr
+        th ID
+        th Название
         if user.id_role == 1 || user.id_role == 2
-          form(action='/clients/edit/' + client.id, method='post', style="display:inline")
-            input(type='text', name='label', placeholder='Новый название')
-            button(type='submit') Редактировать
-          form(action='/clients/delete/' + client.id, method='post', style="display:inline")
-            button(type='submit') Удалить
+          th Действия
+    tbody
+      each client in clients
+        tr
+          td= client.id
+          td= client.label
+          if user.id_role == 1 || user.id_role == 2
+            td
+              form(action='/clients/edit/' + client.id, method='post', style="display:inline")
+                input(type='text', name='label', value=client.label, size="15")
+                button(type='submit') редактировать
+              form(action='/clients/delete/' + client.id, method='post', style="display:inline")
+                button(type='submit' onclick="return confirm('Удалить клиента?')") удалить
+  
   if user.id_role == 1 || user.id_role == 2
+    h2 Добавить клиента
     form(action='/clients/create', method='post')
-      input(type='text', name='label', placeholder='Новый клиент')
+      input(type='text', name='label', placeholder='Название клиента' required)
       button(type='submit') Добавить
